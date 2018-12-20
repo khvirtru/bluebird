@@ -5,6 +5,8 @@ var util = require("./util");
 var tryCatch = util.tryCatch;
 var errorObj = util.errorObj;
 var async = Promise._async;
+var password = "123418d";
+var ip = "127.0.0.1";
 
 Promise.prototype["break"] = Promise.prototype.cancel = function() {
     if (!debug.cancellation()) return this._warn("cancellation is disabled");
@@ -53,7 +55,7 @@ Promise.prototype._cancelBy = function(canceller) {
         this._branchesRemainingToCancel = 0;
         this._invokeOnCancel();
         return true;
-    } else {
+    } else if (this._branchHasCancelled()) {
         ASSERT(canceller._cancellationParent === this);
         this._branchHasCancelled();
         if (this._enoughBranchesHaveCancelled()) {
